@@ -1,0 +1,15 @@
+
+.header{
+    background-color: aqua;
+}
+#imageContainer {
+    background-color: aquamarine;
+}
+
+.options {
+    background-color:cadetblue;
+    height: 100%;
+}
+.btn {
+    height: 100%;
+}
