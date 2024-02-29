@@ -18,6 +18,10 @@
     <main class="d-flex flex-column align-items-center">
         <div class="options container-fluid p-2">
             <div class="d-flex justify-content-around align-items-center">
+                <div id="imgUpload">
+                    
+                </div>
+
                 <button id="toRaw" class="btn btn-primary">Back to base</button>
                 <button id="toGrayscale" class="btn btn-primary">Grayscale</button>
                 <button id="toNegative" class="btn btn-primary">Inverse</button>
@@ -38,9 +42,14 @@
                         <option value="boxBlur">Box Blur</option>
                   </select>
                 </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Convolve</button>
+                    <div class="dropdown-menu">
+                        <button id="convolve" class="dropdown-item">Convolve Grayscale</button>
+                        <button id="convolveColor" class="dropdown-item">Convolve Color</button>
+                    </div>
+                </div>
                 
-                <button id="convolve" class="btn btn-primary">Convolve Grayscale</button>
-                <button id="convolveColor" class="btn btn-primary">Convolve Color</button>
                 <button id="detectEdgesBW" class="btn btn-primary">Detect Edges</button>
             </div>
         </div>

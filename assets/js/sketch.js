@@ -1,4 +1,8 @@
 let img;
+let upload;
+let width = 600, height = 600;
+
+let newImg;
 
 function preload() {
     img = loadImage('assets/img/Valve_original_(1).png');
@@ -10,10 +14,14 @@ function setup() {
     modified.parent('image')
     modified.class('border border-dark')
 
+    upload = createFileInput(handleUpload)
+    upload.parent('imgUpload');
+
     img.resize(width, height);
 
     imgData = new AdvancedImage(img);
     $('#toGrayscale')[0].addEventListener('click', () => {
+        print('event triggered');
         imgData.toGrayscale();
     })
     $('#toRaw')[0].addEventListener('click', () => {
@@ -45,6 +53,16 @@ function setup() {
 }
 
 function draw() {
-    image(imgData.img, 0, 0, width, height);
+    imageMode(CORNER);
+    image(imgData.img, 0, 0, width, img.height*width/img.width);     
+}
 
+
+function handleUpload(file) {
+    if (file.type === 'image') {
+        newImg = loadImage(file.data, newImg => {
+            newImg.resize(width, 0);
+            imgData = new AdvancedImage(newImg);
+        });
+    }
 }
