@@ -1,7 +1,7 @@
 let img;
 
 function preload() {
-    img = loadImage('assets/Valve_original_(1).png');
+    img = loadImage('assets/img/Valve_original_(1).png');
     pixelDensity(1);
 }
 
