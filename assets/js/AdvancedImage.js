@@ -98,6 +98,7 @@ class AdvancedImage extends BasicImage {
         return this.img.pixels;      
     }
 
+    /*
     detectEdges(grayscale = false) {
         let top;
         let right;
@@ -116,5 +117,39 @@ class AdvancedImage extends BasicImage {
             this.img.pixels[i * 4 + 2] = top[i * 4 + 2] + right[i * 4 + 2];
         }
         this.img.updatePixels();
+    }
+    */
+    convolvePixel(x, y, kernel) {
+        let result = new Array(4).fill(0);
+        for (let py = 0; py < kernel.height; py++) {
+            for (let px = 0; px < kernel.width; px++) {
+                let w = kernel.weights[py][px];
+                if (x + px - 1 < 0 || x + px - 1 > this.img.width || y + py - 1 < 0 || y + py - 1 > this.img.height) 
+                    continue;
+                result[0] += this.pixelAt(x + px - 1, y + py - 1)[0] * w
+                result[1] += this.pixelAt(x + px - 1, y + py - 1)[1] * w
+                result[2] += this.pixelAt(x + px - 1, y + py - 1)[2] * w
+                result[3] += this.pixelAt(x + px - 1, y + py - 1)[3]
+            }
+        }
+        return result;
+    }
+    detectEdges() {
+        let kernelTop = new Kernel(Kernel.sobelTop());
+        let kernelRight = new Kernel(Kernel.sobelRight());
+        let test = 0;
+        for (let y = 0; y < this.img.height; y++) {
+            for (let x = 0; x < this.img.height; x++) {
+                let Gx = this.convolvePixel(x, y, kernelRight);
+                let Gy = this.convolvePixel(x, y, kernelTop);
+                let newPixel = this.pixelAt(x, y).map((e, i) => Math.sqrt(Math.pow(Gx[i], 2) + Math.pow(Gy[i], 2)));
+                let index = (y * this.img.width + x) * 4;
+                this.img.pixels[index] = newPixel[0];
+                this.img.pixels[index + 1] = newPixel[1];
+                this.img.pixels[index + 2] = newPixel[2];
+            }
+        }
+        this.img.updatePixels();
+        return this.img.pixels;
     }
 }

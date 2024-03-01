@@ -47,11 +47,8 @@ function setup() {
         if (Kernel[kernelValue] != undefined)
             imgData.convolveColor(new Kernel(Kernel[kernelValue]()));
     })
-    $('#detectColor')[0].addEventListener('click', () => {
+    $('#detectEdges')[0].addEventListener('click', () => {
         imgData.detectEdges();
-    })
-    $('#detectBW')[0].addEventListener('click', () => {
-        imgData.detectEdges(true);
     })
 }
 
