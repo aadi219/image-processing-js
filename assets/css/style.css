@@ -1,15 +1,30 @@
 
 .header{
-    background-color: aqua;
+    background-color: #38a3a5;
+}
+h1 {
+    color: #80ed99;
+    -webkit-text-stroke-width: 2px;
+     -webkit-text-stroke-color: #22577a;
+    font-family:'Courier New', Courier, monospace;
+    font-weight:600;
 }
 #imageContainer {
-    background-color: aquamarine;
+    background-color: #38a3a5;
 }
 
 .options {
-    background-color:cadetblue;
+    background-color:#22577a;
+    color: #0a3450;
     height: 100%;
 }
+/* .form-select{
+    background-color: #57cc99;
+    border-color: #57cc99;
+} */
+
 .btn {
+    color: #22577a;
+    background-color: #57cc99;
     height: 100%;
 }

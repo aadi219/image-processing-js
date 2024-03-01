@@ -57,9 +57,9 @@ class BasicImage {
             for (let x = 0; x < this.img.width; x++) {
                 let index = (y * this.img.width + x) * 4;
                 let red, green, blue, alpha;
-                red = this.img.pixels[index];
-                green = this.img.pixels[index + 1];
-                blue = this.img.pixels[index + 2];
+                red = this.rawPixels[index];
+                green = this.rawPixels[index + 1];
+                blue = this.rawPixels[index + 2];
                 let gray = (red + green + blue) / 3;
                 this.gray[index / 4] = gray;
                 this.img.pixels[index] = gray

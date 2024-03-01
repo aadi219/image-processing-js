@@ -36,6 +36,7 @@ class AdvancedImage extends BasicImage {
     }
 
     convolveBW(kernel) {
+        this.toGrayscale();
         // assuming all RGB values are same (grayscale).
         for (let y = 0; y < this.img.height; y++) {
             let rowsum = 0;
@@ -98,27 +99,6 @@ class AdvancedImage extends BasicImage {
         return this.img.pixels;      
     }
 
-    /*
-    detectEdges(grayscale = false) {
-        let top;
-        let right;
-        if (grayscale) {
-            top = this.convolveBW(new Kernel(Kernel.sobelTop()));
-            right = this.convolveBW(new Kernel(Kernel.sobelRight()));
-        }
-        else {
-            top = this.convolveColor(new Kernel(Kernel.sobelTop()));
-            right = this.convolveColor(new Kernel(Kernel.sobelRight()));
-        }        
-        print(top.length);
-        for (let i = 0; i < this.img.width * this.img.height; i++) {
-            this.img.pixels[i * 4] = top[i * 4] + right[i * 4];
-            this.img.pixels[i * 4 + 1] = top[i * 4 + 1] + right[i * 4 + 1];
-            this.img.pixels[i * 4 + 2] = top[i * 4 + 2] + right[i * 4 + 2];
-        }
-        this.img.updatePixels();
-    }
-    */
     convolvePixel(x, y, kernel) {
         let result = new Array(4).fill(0);
         for (let py = 0; py < kernel.height; py++) {

@@ -53,7 +53,7 @@ function setup() {
 }
 
 function draw() {
-    background(51);
+    background('#0a3450');
     // var scale = 0.8;
     imageMode(CENTER);
     // image(imgData.img, 0.5*width, 0.5*height, scale*width, scale*img.height*width/img.width);  
