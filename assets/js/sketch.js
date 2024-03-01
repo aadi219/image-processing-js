@@ -16,12 +16,12 @@ function setup() {
 
     upload = createFileInput(handleUpload)
     upload.parent('imgUpload');
+    upload.class('form-control')
 
     img.resize(width, height);
 
     imgData = new AdvancedImage(img);
     $('#toGrayscale')[0].addEventListener('click', () => {
-        print('event triggered');
         imgData.toGrayscale();
     })
     $('#toRaw')[0].addEventListener('click', () => {
@@ -47,21 +47,28 @@ function setup() {
         if (Kernel[kernelValue] != undefined)
             imgData.convolveColor(new Kernel(Kernel[kernelValue]()));
     })
-    $('#detectEdgesBW')[0].addEventListener('click', () => {
-        imgData.detectEdgesBW();
+    $('#detectColor')[0].addEventListener('click', () => {
+        imgData.detectEdges();
+    })
+    $('#detectBW')[0].addEventListener('click', () => {
+        imgData.detectEdges(true);
     })
 }
 
 function draw() {
-    imageMode(CORNER);
-    image(imgData.img, 0, 0, width, img.height*width/img.width);     
+    background(51);
+    // var scale = 0.8;
+    imageMode(CENTER);
+    // image(imgData.img, 0.5*width, 0.5*height, scale*width, scale*img.height*width/img.width);  
+    image(imgData.img, 0.5 * width, 0.5 * height);  
 }
 
 
 function handleUpload(file) {
     if (file.type === 'image') {
         newImg = loadImage(file.data, newImg => {
-            newImg.resize(width, 0);
+            newImg.resize(0, width);
+            pixelDensity(1);
             imgData = new AdvancedImage(newImg);
         });
     }

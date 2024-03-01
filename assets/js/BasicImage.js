@@ -1,6 +1,7 @@
 class BasicImage {
     constructor(img) {
         this.img = img;
+        print(img);
         this.img.loadPixels();
         this.rawPixels = [...this.img.pixels];
     }
