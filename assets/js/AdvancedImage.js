@@ -39,7 +39,6 @@ class AdvancedImage extends BasicImage {
         this.toGrayscale();
         // assuming all RGB values are same (grayscale).
         for (let y = 0; y < this.img.height; y++) {
-            let rowsum = 0;
             for (let x = 0; x < this.img.width; x++) {
                 // for each pixel, initialise a result
                 // whose value will be the sum of (each surrounding pixel * respective weight in kernel)
@@ -47,7 +46,7 @@ class AdvancedImage extends BasicImage {
                 for (let py = 0; py < kernel.height; py++) {
                     for (let px = 0; px < kernel.width; px++) {
                         let w = kernel.weights[py][px];
-                        // x + px - 1 gives appropriate surrounding pixels horizontally for a 3x3 kernel
+                        // x + px - 1 gives appropriate surrounding pixels horizontally for a 3x3 kernel, 1 being Math.floor(kernel.width)
                         // x + 0 - 1 = pixel to the left, x + 1 - 1 = pixel at center, x + 2 - 1 = pixel to the right
                         // y + py - 1 being the vertical analog.
                         if (x + px - 1 < 0 || x + px - 1 > this.img.width || y + py - 1 < 0 || y + py - 1 > this.img.height) {
@@ -57,15 +56,11 @@ class AdvancedImage extends BasicImage {
                         result += this.pixelAt(x + px - 1, y + py - 1)[0] * w
                     }
                 }
-                rowsum += result;
                 let index = (y * this.img.width + x) * 4
                 this.img.pixels[index] = result;
                 this.img.pixels[index + 1] = result;    
                 this.img.pixels[index + 2] = result;
-            }
-            if (rowsum == 0) {
-                print(y);
-            }           
+            }     
         }
         this.img.updatePixels();   
         return this.img.pixels;     
@@ -80,6 +75,7 @@ class AdvancedImage extends BasicImage {
                 for (let py = 0; py < kernel.height; py++) {
                     for (let px = 0; px < kernel.width; px++ ) {
                         let w = kernel.weights[py][px];
+                        
                         if (x + px - 1 < 0 || x + px - 1 > this.img.width || y + py - 1 < 0 || y + py - 1 > this.img.height) 
                             continue;
                         result[0] += this.pixelAt(x + px - 1, y + py - 1)[0] * w
@@ -88,7 +84,7 @@ class AdvancedImage extends BasicImage {
                         result[3] += this.pixelAt(x + px - 1, y + py - 1)[3]
                     }
                 }
-                let index = (y * this.img.width + x) * 4;
+                let index = (y * this.img.width + x) * 4;   
                 this.img.pixels[index] = result[0];
                 this.img.pixels[index + 1] = result[1];
                 this.img.pixels[index + 2] = result[2];
@@ -100,12 +96,15 @@ class AdvancedImage extends BasicImage {
     }
 
     convolvePixel(x, y, kernel) {
+        // same algorithm as the inner double for-loop in previous convolve functions.
+        // separated to get convolution result of a single pixel for two different kernels, used in edgeDetect to find Gx, Gy
         let result = new Array(4).fill(0);
         for (let py = 0; py < kernel.height; py++) {
             for (let px = 0; px < kernel.width; px++) {
                 let w = kernel.weights[py][px];
+
                 if (x + px - 1 < 0 || x + px - 1 > this.img.width || y + py - 1 < 0 || y + py - 1 > this.img.height) 
-                    continue;
+                    continue;                
                 result[0] += this.pixelAt(x + px - 1, y + py - 1)[0] * w
                 result[1] += this.pixelAt(x + px - 1, y + py - 1)[1] * w
                 result[2] += this.pixelAt(x + px - 1, y + py - 1)[2] * w
@@ -117,18 +116,20 @@ class AdvancedImage extends BasicImage {
     detectEdges() {
         let kernelTop = new Kernel(Kernel.sobelTop());
         let kernelRight = new Kernel(Kernel.sobelRight());
-        let test = 0;
+
         for (let y = 0; y < this.img.height; y++) {
-            for (let x = 0; x < this.img.height; x++) {
+            for (let x = 0; x < this.img.width; x++) {
                 let Gx = this.convolvePixel(x, y, kernelRight);
                 let Gy = this.convolvePixel(x, y, kernelTop);
+
                 let newPixel = this.pixelAt(x, y).map((e, i) => Math.sqrt(Math.pow(Gx[i], 2) + Math.pow(Gy[i], 2)));
+                
                 let index = (y * this.img.width + x) * 4;
                 this.img.pixels[index] = newPixel[0];
                 this.img.pixels[index + 1] = newPixel[1];
                 this.img.pixels[index + 2] = newPixel[2];
             }
-        }
+        }        
         this.img.updatePixels();
         return this.img.pixels;
     }

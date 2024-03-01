@@ -1,16 +1,14 @@
 let img;
 let upload;
-let width = 600, height = 600;
-
-let newImg;
-
+let width = 600, height = 600
 function preload() {
+    // load default
     img = loadImage('assets/img/Valve_original_(1).png');
     pixelDensity(1);
 }
 
 function setup() {
-    let modified = createCanvas(600,600);
+    let modified = createCanvas(width,height);
     modified.parent('image')
     modified.class('border border-dark')
 
@@ -21,6 +19,8 @@ function setup() {
     img.resize(width, height);
 
     imgData = new AdvancedImage(img);
+
+    // initialise event listeners
     $('#toGrayscale')[0].addEventListener('click', () => {
         imgData.toGrayscale();
     })
@@ -54,9 +54,7 @@ function setup() {
 
 function draw() {
     background('#0a3450');
-    // var scale = 0.8;
     imageMode(CENTER);
-    // image(imgData.img, 0.5*width, 0.5*height, scale*width, scale*img.height*width/img.width);  
     image(imgData.img, 0.5 * width, 0.5 * height);  
 }
 

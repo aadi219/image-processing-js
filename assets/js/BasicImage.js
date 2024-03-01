@@ -51,6 +51,7 @@ class BasicImage {
     }
 
     toGrayscale() {
+        // avg-value grayscale
         if (this.gray == undefined)
                 this.gray = new Array(this.img.width * this.img.height);
         for (let y = 0; y < this.img.height; y++) {
@@ -75,6 +76,10 @@ class BasicImage {
     }
 
     toGrid() {
+        // convert 1D array to 3D matrix.
+        // no current usages..
+
+        // array initialization done first as arr.push was too computationally intensive for large images.
         let grid = Array.from(new Array(this.img.width), () => new Array(this.img.height));
         
         for (let y = 0; y < this.img.height; y++) {
